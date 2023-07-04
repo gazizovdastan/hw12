@@ -5,30 +5,30 @@
 //  Created by Dastan on 03.07.2023.
 //
 
-import Foundation
 import UIKit
 
 class CircularProgressView: UIView {
+
     fileprivate var progressLayer = CAShapeLayer()
     fileprivate var trackLayer = CAShapeLayer()
     fileprivate var didConfigureLabel = false
     fileprivate var rounded: Bool
     fileprivate var filled: Bool
-    fileprivate var lineWidth = CGFloat?
+    fileprivate let lineWidth: CGFloat?
     var timeToFill = 3.43
-    
+
     var progressColor = UIColor.white {
         didSet {
             progressLayer.strokeColor = progressColor.cgColor
         }
     }
-    
+
     var trackColor = UIColor.white {
         didSet {
             trackLayer.strokeColor = trackColor.cgColor
         }
     }
-    
+
     var progress: Float {
         didSet {
             var pathMoved = progress - oldValue
@@ -38,8 +38,8 @@ class CircularProgressView: UIView {
             setProgress(duration: timeToFill * Double(pathMoved), to: progress)
         }
     }
-    
-    fileprivate func createProgressView() {
+
+    fileprivate func createProgressView(){
         self.backgroundColor = .clear
         self.layer.cornerRadius = frame.size.width / 2
         let circularPath = UIBezierPath(arcCenter: center, radius: frame.width / 2, startAngle: CGFloat(-0.5 * .pi), endAngle: CGFloat(1.5 * .pi), clockwise: true)
@@ -70,21 +70,21 @@ class CircularProgressView: UIView {
         }
         layer.addSublayer(progressLayer)
     }
-    
+
     func trackColorToProgressColor() -> Void {
         trackColor = progressColor
         trackColor = UIColor(red: progressColor.cgColor.components![0], green: progressColor.cgColor.components![1], blue: progressColor.cgColor.components![2], alpha: 0.2)
     }
-    
-    func setProgress(ducation: TimeInterval = 3, to newProgress: Float) -> Void {
+
+    func setProgress(duration: TimeInterval = 3, to newProgress: Float) -> Void {
         let animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.duration = ducation
+        animation.duration = duration
         animation.fromValue = progressLayer.strokeEnd
         animation.toValue = newProgress
         progressLayer.strokeEnd = CGFloat(newProgress)
         progressLayer.add(animation, forKey: "animationProgress")
     }
-    
+
     override init(frame: CGRect) {
         progress = 0
         rounded = true
@@ -94,8 +94,8 @@ class CircularProgressView: UIView {
         filled = false
         createProgressView()
     }
-    
-    required init(coder: NSCoder) {
+
+    required init?(coder: NSCoder) {
         progress = 0
         rounded = true
         filled = false
@@ -103,8 +103,8 @@ class CircularProgressView: UIView {
         super.init(coder: coder)
         createProgressView()
     }
-    
-    init(frame: CGRectm lineWidth: CGFloat?, rounded: Bool) {
+
+    init(frame: CGRect, lineWidth: CGFloat?, rounded: Bool) {
         progress = 0
         if lineWidth == nil {
             self.filled = true
