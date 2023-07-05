@@ -99,6 +99,7 @@ class ViewController: UIViewController {
 
     @objc func buttonPressed() {
         if !isStarted {
+            self.createStartTime()
             timer = createTimer()
             isStarted = true
             isRunning = true
@@ -145,7 +146,6 @@ class ViewController: UIViewController {
 
     func createTimer() -> Timer {
         var progressPercent: Float = isWorkTime ? 0.06667 : 0.2
-        self.createStartTime()
         let timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
             self.counter -= 1
             if self.counter < 0 {
